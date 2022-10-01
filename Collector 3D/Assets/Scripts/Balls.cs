@@ -4,15 +4,17 @@ using UnityEngine;
 
 public class Balls : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    private Rigidbody rb;
+    private float speed = 15f;
+
+    void Awake()
     {
-        
+        rb = GetComponent<Rigidbody>();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void MoveBalls()
     {
-        
+        rb.velocity = Vector3.forward * speed;
     }
+
 }

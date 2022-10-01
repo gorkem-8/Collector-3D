@@ -5,27 +5,28 @@ using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
+    [SerializeField] private GameObject startButton;
     private Rigidbody rb;
     private Camera cam;
     private Vector3 oldTouchPosition;
     private float speed = 8f;
-    private bool stopped;
-    private Stack<Transform> ballStack;
+    private bool stopped = false;
+    private List<Transform> objectList;
+    private bool firstTouch = false;
 
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
         cam = Camera.main;
         oldTouchPosition = Vector3.zero;
-        ballStack = new Stack<Transform>();
+        objectList = new List<Transform>();
     }
 
     void Update()
     {
-        if (stopped) return;
-
         if (Touchscreen.current.primaryTouch.press.isPressed)
         {
+            //firstTouch = true;
             Vector2 screenPosition = Touchscreen.current.primaryTouch.position.ReadValue();
             Vector3 worldPosition = cam.ScreenToWorldPoint(new Vector3(screenPosition.x, screenPosition.y, 15f));
             if (oldTouchPosition != Vector3.zero)
@@ -50,36 +51,54 @@ public class Player : MonoBehaviour
 
         if (Touchscreen.current.primaryTouch.press.wasReleasedThisFrame)
             oldTouchPosition = Vector3.zero;
+        
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.TryGetComponent(out Balls _))
         {
-            ballStack.Push(other.transform);
+            objectList.Add(other.transform);
+
         }
     }
     private void OnTriggerExit(Collider other)
     {
         if (other.TryGetComponent(out Balls _))
         {
+            objectList.Remove(other.transform);
         }
     }
 
     void MoveForward()
     {
-        rb.velocity = Vector3.forward * speed;
+        if (!firstTouch) return;
+        rb.velocity = stopped ? Vector3.zero : Vector3.forward * speed;
     }
 
     void MoveSides(bool right)
     {
-        rb.velocity = right ? new Vector3(1f, 0f, 1f) * speed :  new Vector3(-1f, 0f, 1f) * speed;
+        float a = stopped ? 0f : 1f;
+        rb.velocity = right ? new Vector3(1f, 0f, a) * speed :  new Vector3(-1f, 0f, a) * speed;
     }
 
     public void MovementStop(bool stopped)
     {
         this.stopped = stopped;
-        if (stopped) rb.velocity = Vector3.zero;
+    }
+
+    public void PushBalls()
+    {
+        foreach (Transform i in objectList.ToArray())
+        {
+            i.GetComponent<Balls>().MoveBalls();
+        }
+    }
+
+    public void GameStart()
+    {
+        firstTouch = true;
+        startButton.SetActive(false);
     }
 
 }
