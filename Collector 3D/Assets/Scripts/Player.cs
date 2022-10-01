@@ -8,7 +8,7 @@ public class Player : MonoBehaviour
     private Rigidbody rb;
     private Camera cam;
     private Vector3 oldTouchPosition;
-    private float speed = 5f;
+    private float speed = 8f;
 
     void Start()
     {
@@ -27,13 +27,11 @@ public class Player : MonoBehaviour
             {
                 if (worldPosition.x - oldTouchPosition.x > 0.01f)
                 {
-                    Debug.Log(worldPosition + "fasfasf" + oldTouchPosition);
                     MoveSides(true);
                 }
 
                 else if (worldPosition.x - oldTouchPosition.x < -0.01f)
                 {
-                    Debug.Log(worldPosition + "fasfasf" + oldTouchPosition);
                     MoveSides(false);
                 }
 
@@ -57,13 +55,7 @@ public class Player : MonoBehaviour
 
     void MoveSides(bool right)
     {
-
-        if (right)
-        {
-            rb.velocity = new Vector3(2f, 0f, 1f) * speed;
-        }
-        else
-            rb.velocity = new Vector3(-2f, 0f, 1f) * speed;
+        rb.velocity = right ? new Vector3(1f, 0f, 1f) * speed :  new Vector3(-1f, 0f, 1f) * speed;
     }
 
 
