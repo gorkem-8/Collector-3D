@@ -9,16 +9,21 @@ public class Player : MonoBehaviour
     private Camera cam;
     private Vector3 oldTouchPosition;
     private float speed = 8f;
+    private bool stopped;
+    private Stack<Transform> ballStack;
 
-    void Start()
+    void Awake()
     {
         rb = GetComponent<Rigidbody>();
         cam = Camera.main;
         oldTouchPosition = Vector3.zero;
+        ballStack = new Stack<Transform>();
     }
 
     void Update()
     {
+        if (stopped) return;
+
         if (Touchscreen.current.primaryTouch.press.isPressed)
         {
             Vector2 screenPosition = Touchscreen.current.primaryTouch.position.ReadValue();
@@ -45,7 +50,20 @@ public class Player : MonoBehaviour
 
         if (Touchscreen.current.primaryTouch.press.wasReleasedThisFrame)
             oldTouchPosition = Vector3.zero;
+    }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.TryGetComponent(out Balls _))
+        {
+            ballStack.Push(other.transform);
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.TryGetComponent(out Balls _))
+        {
+        }
     }
 
     void MoveForward()
@@ -58,5 +76,10 @@ public class Player : MonoBehaviour
         rb.velocity = right ? new Vector3(1f, 0f, 1f) * speed :  new Vector3(-1f, 0f, 1f) * speed;
     }
 
+    public void MovementStop(bool stopped)
+    {
+        this.stopped = stopped;
+        if (stopped) rb.velocity = Vector3.zero;
+    }
 
 }
