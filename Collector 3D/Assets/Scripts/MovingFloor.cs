@@ -1,11 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class MovingFloor : MonoBehaviour
 {
     [SerializeField] private Gate gate;
     [SerializeField] private Material groundMat;
+    [SerializeField] private TextMeshPro ballText;
+    [SerializeField] private int neededBall;
+    private int currentBall = 0;
+
     private float realTime;
     private bool moveUp = false;
     private Transform ground;
@@ -45,6 +50,8 @@ public class MovingFloor : MonoBehaviour
         {
             realTime = 0f;
             Destroy(other.gameObject,2f);
+            currentBall++;
+            ballText.text = currentBall + "/" + neededBall;
         }
     }
 
@@ -57,8 +64,14 @@ public class MovingFloor : MonoBehaviour
             if (realTime < 2f) return;
             realTime = 0f;
 
-            gameObject.transform.parent.GetComponent<MeshRenderer>().material = groundMat;
-            moveUp = true;
+            if (currentBall >= neededBall)
+            {
+                gameObject.transform.parent.GetComponent<MeshRenderer>().material = groundMat;
+                ballText.gameObject.SetActive(false);
+                moveUp = true;
+            }
+
+
         }
     }
 }
