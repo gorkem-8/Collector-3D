@@ -9,7 +9,7 @@ public class Player : MonoBehaviour
     private Rigidbody rb;
     private Camera cam;
     private Vector3 oldTouchPosition;
-    private float speed = 8f;
+    private float speed = 10f;
     private bool stopped = false;
     private List<Transform> objectList;
     private bool firstTouch = false;
@@ -20,10 +20,6 @@ public class Player : MonoBehaviour
         cam = Camera.main;
         oldTouchPosition = Vector3.zero;
         objectList = new List<Transform>();
-    }
-
-    private void Start()
-    {
     }
 
     void Update()
@@ -82,7 +78,7 @@ public class Player : MonoBehaviour
     void MoveSides(bool right)
     {
         float a = stopped ? 0f : 1f;
-        rb.velocity = right ? new Vector3(1.5f, 0f, a) * speed :  new Vector3(-1.5f, 0f, a) * speed;
+        rb.velocity = right ? new Vector3(1f, 0f, a) * speed :  new Vector3(-1f, 0f, a) * speed;
     }
 
     public void MovementStop(bool stopped)
