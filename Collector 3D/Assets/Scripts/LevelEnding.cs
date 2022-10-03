@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class LevelEnding : MonoBehaviour
 {
-    [SerializeField] private Manager manager;
+    [SerializeField] private GameObject nextLevelPanel;
 
 
     private void OnTriggerEnter(Collider other)
@@ -12,7 +12,7 @@ public class LevelEnding : MonoBehaviour
         if (other.TryGetComponent(out Player player))
         {
             player.MovementStop(true);
-            manager.NextLevel();
+            nextLevelPanel.SetActive(true);
         }
     }
 

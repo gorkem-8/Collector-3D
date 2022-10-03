@@ -79,7 +79,7 @@ public class Player : MonoBehaviour
     void MoveSides(bool right)
     {
         float a = stopped ? 0f : 1f;
-        rb.velocity = right ? new Vector3(1f, 0f, a) * speed :  new Vector3(-1f, 0f, a) * speed;
+        rb.velocity = right ? new Vector3(1.5f, 0f, a) * speed :  new Vector3(-1.5f, 0f, a) * speed;
     }
 
     public void MovementStop(bool stopped)
