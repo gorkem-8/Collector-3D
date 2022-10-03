@@ -8,15 +8,14 @@ public class Manager : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI levelText;
     private int level;
+    private int newStart;
 
     private void Awake()
     {
+        newStart = PlayerPrefs.GetInt("Started", 0); 
         level = PlayerPrefs.GetInt("Level", 1);
         levelText.text = "Level " + level.ToString();
-        if (level != SceneManager.GetActiveScene().buildIndex + 1)
-        {
-            LoadScene();
-        }
+        LoadCurrentScene();
     }
 
     public void ReStartLevel()
@@ -27,18 +26,39 @@ public class Manager : MonoBehaviour
     public void NextLevel()
     {
         PlayerPrefs.SetInt("Level", PlayerPrefs.GetInt("Level", 1) + 1);
-        LoadScene();
+        LoadNextScene();
     }
 
-    public void LoadScene()
+    public void LoadCurrentScene()
     {
+        if (level >= 10 && newStart==0)
+        {
+            int randInt = Random.Range(0, 10);
+            SceneManager.LoadScene(randInt);
+            PlayerPrefs.SetInt("Started", 1);
+        }
+        else if (level < 10 && newStart == 0)
+        {
+            SceneManager.LoadScene(level - 1);
+            PlayerPrefs.SetInt("Started", 1);
+        }
+        else
+            PlayerPrefs.SetInt("Started", 0);
+
+    }
+
+    public void LoadNextScene()
+    {
+        PlayerPrefs.SetInt("Started", 1);
         if (level >= 10)
         {
             int randInt = Random.Range(0, 10);
             SceneManager.LoadScene(randInt);
         }
         else
+        {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        }
     }
 
 }
