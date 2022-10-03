@@ -91,7 +91,10 @@ public class Player : MonoBehaviour
     {
         foreach (Transform i in objectList.ToArray())
         {
-            i.GetComponent<Balls>().MoveBalls();
+            if (i != null)
+            {
+                i.GetComponent<Balls>().MoveBalls();
+            }
         }
     }
 

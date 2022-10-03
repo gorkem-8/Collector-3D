@@ -33,6 +33,7 @@ public class MovingFloor : MonoBehaviour
         }
         else
         {
+            ground.position = new Vector3(ground.position.x, -0.5f, ground.position.z);
             finished = true;
             gate.OpenGates();
         }
@@ -50,7 +51,7 @@ public class MovingFloor : MonoBehaviour
         if (other.TryGetComponent(out Balls _))
         {
             realTime = 0f;
-            Destroy(other.gameObject,2f);
+            Destroy(other.gameObject,3f);
             currentBall++;
             ballText.text = currentBall + "/" + neededBall;
         }
