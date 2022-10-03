@@ -22,11 +22,14 @@ public class Player : MonoBehaviour
         objectList = new List<Transform>();
     }
 
+    private void Start()
+    {
+    }
+
     void Update()
     {
         if (Touchscreen.current.primaryTouch.press.isPressed)
         {
-            //firstTouch = true;
             Vector2 screenPosition = Touchscreen.current.primaryTouch.position.ReadValue();
             Vector3 worldPosition = cam.ScreenToWorldPoint(new Vector3(screenPosition.x, screenPosition.y, 15f));
             if (oldTouchPosition != Vector3.zero)

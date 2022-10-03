@@ -20,6 +20,7 @@ public class Manager : MonoBehaviour
 
     public void ReStartLevel()
     {
+        PlayerPrefs.SetInt("Started", 1);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
@@ -31,13 +32,13 @@ public class Manager : MonoBehaviour
 
     public void LoadCurrentScene()
     {
-        if (level >= 10 && newStart==0)
+        if (level > 10 && newStart==0)
         {
             int randInt = Random.Range(0, 10);
             SceneManager.LoadScene(randInt);
             PlayerPrefs.SetInt("Started", 1);
         }
-        else if (level < 10 && newStart == 0)
+        else if (level <= 10 && newStart == 0)
         {
             SceneManager.LoadScene(level - 1);
             PlayerPrefs.SetInt("Started", 1);
