@@ -5,6 +5,7 @@ using TMPro;
 
 public class MovingFloor : MonoBehaviour
 {
+    [SerializeField] private GameObject failPanel;
     [SerializeField] private Gate gate;
     [SerializeField] private Material groundMat;
     [SerializeField] private TextMeshPro ballText;
@@ -70,6 +71,8 @@ public class MovingFloor : MonoBehaviour
                 ballText.gameObject.SetActive(false);
                 moveUp = true;
             }
+            else
+                failPanel.SetActive(true);
 
 
         }
